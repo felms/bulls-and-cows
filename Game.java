@@ -1,9 +1,12 @@
+import java.util.Random;
 public class Game {
     private int size;
     private long secretCode;
+    private Random random;
 
     public Game(int difficultyLevel) {
         this.size = difficultyLevel;
+        this.random = new Random();
         this.secretCode = generateSecretCode(this.size);
     }
 
@@ -27,19 +30,17 @@ public class Game {
     // Gera o código secreto
     private long generateSecretCode(int size) {
 
-        long pseudoRandomNumber = System.nanoTime();
-        int number = (int) Math.pow(10, size);
-        pseudoRandomNumber = pseudoRandomNumber % number; // Ajusta o número para o tamanho do código.
+        long upperlimit = (long)Math.pow(10, size);
+        long number = (long) (random.nextDouble() * upperlimit);
 
         // Gera números até conseguir um que atenda os requisitos
         // de não possuir digitos repetidos e nem começar com o
         // digito 0.
-        while (!checkSecretCode(pseudoRandomNumber, size)) {
-            pseudoRandomNumber = System.nanoTime();
-            pseudoRandomNumber = pseudoRandomNumber % number;
+        while (!checkSecretCode(number, size)) {
+            number = (long) (random.nextDouble() * upperlimit);
         }
 
-        return pseudoRandomNumber;
+        return number;
     }
 
 
